@@ -10,3 +10,8 @@ GitHub User
 Job Description
 
 
+#DAY TWO
+create more smoothly layout to display profile screen.
+I had added some comments with my points.
+
+
