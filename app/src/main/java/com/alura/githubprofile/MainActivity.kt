@@ -32,6 +32,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
 import com.alura.githubprofile.ui.theme.GitHubProfileTheme
 
 class MainActivity : ComponentActivity() {
@@ -79,9 +80,10 @@ private fun ProfileScreen() {
                 .height(boxHeight)
         ) {
             // add off set to the box could cause any problem with big layouts?
-            Image(
-                painter = painterResource(id = R.drawable.profile_image),
-                contentDescription = "",
+            AsyncImage(
+                model = "https://avatars.githubusercontent.com/u/43793053?v=4",
+                placeholder = painterResource(id = R.drawable.profile_image),
+                contentDescription = "Profile Image",
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
                     .offset(y = imageHeight / 2)
