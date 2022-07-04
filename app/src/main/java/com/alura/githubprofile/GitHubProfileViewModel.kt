@@ -1,22 +1,30 @@
 package com.alura.githubprofile
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.alura.githubprofile.entities.UserProfileState
 import com.alura.githubprofile.repository.GitHubProfileRepository
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 internal class GitHubProfileViewModel(private val repository: GitHubProfileRepository) : ViewModel() {
 
-    fun fetchUserData() {
+    private val _viewState = MutableStateFlow(UserProfileState())
+    val viewState: StateFlow<UserProfileState> = _viewState
+
+    init {
+        // Fetch user data when an instance of viewmodel is created.
+        fetchUserData()
+    }
+
+    private fun fetchUserData() {
         viewModelScope.launch {
-            val fetched = repository.fetchUserData()
-            if (fetched.isSuccessful) {
-                val data = fetched.body()
-                Log.d("sm.borges", "fetched: ${data?.name}")
-            } else {
-                Log.d("sm.borges", "deu ruim : ${fetched.code()}")
-            }
+            val userData = repository.fetchUserData()
+
+            _viewState.value = _viewState.value.copy(
+                userData = userData.body()
+            )
         }
     }
 }
