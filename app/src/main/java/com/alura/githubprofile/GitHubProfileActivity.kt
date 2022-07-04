@@ -39,7 +39,7 @@ import com.alura.githubprofile.entities.UserProfileState
 import com.alura.githubprofile.ui.theme.GitHubProfileTheme
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class MainActivity : ComponentActivity() {
+class GitHubProfileActivity : ComponentActivity() {
 
     private val viewModel: GitHubProfileViewModel by viewModel()
 
@@ -52,7 +52,7 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colors.background
                 ) {
                     // Handle recomposition and save the state. When a recomposition occurs the value will be subscribed.
-                    val profileState: State<UserProfileState> = viewModel.viewState.collectAsState()
+                    val profileState: State<UserProfileState?> = viewModel.viewState.collectAsState()
                     ProfileScreen(profileState.value)
                 }
             }
@@ -61,7 +61,23 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-private fun ProfileScreen(state: UserProfileState) {
+private fun ProfileScreen(state: UserProfileState?) {
+    when (state) {
+        is UserProfileState.Success -> ProfileContentScreen(state.userData)
+        is UserProfileState.Error -> {
+            // is Error
+        }
+        is UserProfileState.Loading -> {
+            // is loading
+        }
+        else -> {
+            // is null
+        }
+    }
+}
+
+@Composable
+private fun ProfileContentScreen(userData: GitHubUserData) {
     Column {
         // Will only evaluated during the composition
         val boxHeight = remember {
@@ -90,7 +106,7 @@ private fun ProfileScreen(state: UserProfileState) {
         ) {
             // add off set to the box could cause any problem with big layouts?
             AsyncImage(
-                model = state.userData?.avatarUrl.orEmpty(),
+                model = userData.avatarUrl,
                 placeholder = painterResource(id = R.drawable.profile_image),
                 contentDescription = "Profile Image",
                 contentScale = ContentScale.Crop,
@@ -113,11 +129,11 @@ private fun ProfileScreen(state: UserProfileState) {
             modifier = Modifier.fillMaxWidth()
         ) {
             Text(
-                text = state.userData?.name.orEmpty(),
+                text = userData.name,
                 fontSize = 24.sp
             )
             Text(
-                text = state.userData?.userName.orEmpty(),
+                text = userData.userName,
                 fontSize = 16.sp,
                 fontWeight = FontWeight.Bold
             )
@@ -125,7 +141,7 @@ private fun ProfileScreen(state: UserProfileState) {
 
         // Bottom description.
         Text(
-            text = state.userData?.description.orEmpty(),
+            text = userData.description,
             fontSize = 12.sp,
             modifier = Modifier
                 .fillMaxWidth()
@@ -142,7 +158,7 @@ private fun ProfileScreen(state: UserProfileState) {
 @Composable
 fun DefaultPreview() {
     // Create a mock content for preview.
-    val previewState = UserProfileState(
+    val previewState = UserProfileState.Success(
         userData = GitHubUserData(
             userName = "smborgesMobile",
             id = 0L,

@@ -10,8 +10,8 @@ import kotlinx.coroutines.launch
 
 internal class GitHubProfileViewModel(private val repository: GitHubProfileRepository) : ViewModel() {
 
-    private val _viewState = MutableStateFlow(UserProfileState())
-    val viewState: StateFlow<UserProfileState> = _viewState
+    private val _viewState: MutableStateFlow<UserProfileState?> = MutableStateFlow(null)
+    val viewState: StateFlow<UserProfileState?> = _viewState
 
     init {
         // Fetch user data when an instance of viewmodel is created.
@@ -19,12 +19,14 @@ internal class GitHubProfileViewModel(private val repository: GitHubProfileRepos
     }
 
     private fun fetchUserData() {
+        _viewState.value = UserProfileState.Loading
         viewModelScope.launch {
-            val userData = repository.fetchUserData()
-
-            _viewState.value = _viewState.value.copy(
-                userData = userData.body()
-            )
+            try {
+                val userData = repository.fetchUserData()
+                _viewState.value = UserProfileState.Success(userData = userData)
+            } catch (exception: Exception) {
+                _viewState.value = UserProfileState.Error
+            }
         }
     }
 }
