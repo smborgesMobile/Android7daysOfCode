@@ -1,4 +1,4 @@
-package com.alura.githubprofile.retrofit
+package com.alura.githubprofile.webservice
 
 import com.alura.githubprofile.api.GitHubApi
 import retrofit2.Retrofit

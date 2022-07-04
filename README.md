@@ -22,4 +22,10 @@ coil library.
 
 DOCUMENTATION: https://github.com/coil-kt/coil
 
+**#DAY FOUR**
+
+Fetch github profile api data then log it into the onCreate().
+Renaming packages
+Renaming classes
+
 
