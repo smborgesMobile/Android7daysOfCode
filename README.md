@@ -28,4 +28,7 @@ Fetch github profile api data then log it into the onCreate().
 Renaming packages
 Renaming classes
 
+**#DAY FIVE**
+Bind fetched data to compose and create loading screen to handle long running operations.
+
 

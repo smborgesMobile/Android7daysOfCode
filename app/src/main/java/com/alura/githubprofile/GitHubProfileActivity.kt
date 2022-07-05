@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
@@ -67,12 +68,21 @@ private fun ProfileScreen(state: UserProfileState?) {
         is UserProfileState.Error -> {
             // is Error
         }
-        is UserProfileState.Loading -> {
-            // is loading
-        }
+        is UserProfileState.Loading -> ProfileScreenLoading()
         else -> {
             // is null
         }
+    }
+}
+
+@Composable
+private fun ProfileScreenLoading() {
+    Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
+        Spacer(Modifier.height(50.dp))
+        CircularProgressIndicator(
+            modifier = Modifier.size(50.dp)
+        )
+        Spacer(Modifier.height(30.dp))
     }
 }
 
@@ -154,8 +164,9 @@ private fun ProfileContentScreen(userData: GitHubUserData) {
     }
 }
 
-@Preview(showBackground = true)
+
 @Composable
+@Preview(showBackground = true)
 fun DefaultPreview() {
     // Create a mock content for preview.
     val previewState = UserProfileState.Success(
