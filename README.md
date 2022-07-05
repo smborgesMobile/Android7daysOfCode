@@ -29,6 +29,7 @@ Renaming packages
 Renaming classes
 
 **#DAY FIVE**
+
 Bind fetched data to compose and create loading screen to handle long running operations.
 
 
