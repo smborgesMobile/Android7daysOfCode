@@ -1,13 +1,9 @@
-package com.alura.githubprofile
+package com.alura.githubprofile.presentation.screen
 
-import android.os.Bundle
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
@@ -16,12 +12,8 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.CircularProgressIndicator
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.State
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -35,34 +27,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
-import com.alura.githubprofile.entities.GitHubUserData
+import com.alura.githubprofile.R
 import com.alura.githubprofile.entities.UserProfileState
+import com.alura.githubprofile.presentation.screen.entities.GitHubProfileUiState
 import com.alura.githubprofile.ui.theme.GitHubProfileTheme
-import org.koin.androidx.viewmodel.ext.android.viewModel
-
-class GitHubProfileActivity : ComponentActivity() {
-
-    private val viewModel: GitHubProfileViewModel by viewModel()
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContent {
-            GitHubProfileTheme {
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colors.background
-                ) {
-                    // Handle recomposition and save the state. When a recomposition occurs the value will be subscribed.
-                    val profileState: State<UserProfileState?> = viewModel.viewState.collectAsState()
-                    ProfileScreen(profileState.value)
-                }
-            }
-        }
-    }
-}
 
 @Composable
-private fun ProfileScreen(state: UserProfileState?) {
+internal fun ProfileScreen(state: UserProfileState?) {
     when (state) {
         is UserProfileState.Success -> ProfileContentScreen(state.userData)
         is UserProfileState.Error -> {
@@ -76,7 +47,7 @@ private fun ProfileScreen(state: UserProfileState?) {
 }
 
 @Composable
-private fun ProfileScreenLoading() {
+internal fun ProfileScreenLoading() {
     Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
         Spacer(Modifier.height(50.dp))
         CircularProgressIndicator(
@@ -87,7 +58,7 @@ private fun ProfileScreenLoading() {
 }
 
 @Composable
-private fun ProfileContentScreen(userData: GitHubUserData) {
+internal fun ProfileContentScreen(userData: GitHubProfileUiState) {
     Column {
         // Will only evaluated during the composition
         val boxHeight = remember {
@@ -164,15 +135,13 @@ private fun ProfileContentScreen(userData: GitHubUserData) {
     }
 }
 
-
 @Composable
 @Preview(showBackground = true)
-fun DefaultPreview() {
+internal fun DefaultPreview() {
     // Create a mock content for preview.
     val previewState = UserProfileState.Success(
-        userData = GitHubUserData(
+        userData = GitHubProfileUiState(
             userName = "smborgesMobile",
-            id = 0L,
             avatarUrl = "https://avatars.githubusercontent.com/u/43793053?v=4",
             name = "Sérgio Borges",
             description = "Android Developer"

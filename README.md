@@ -32,4 +32,7 @@ Renaming classes
 
 Bind fetched data to compose and create loading screen to handle long running operations.
 
+**#DAY SIX**
+Move composable code to other file and convert data entity to view entity.
+
 

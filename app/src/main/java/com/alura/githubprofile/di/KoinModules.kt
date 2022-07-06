@@ -1,6 +1,6 @@
 package com.alura.githubprofile.di
 
-import com.alura.githubprofile.GitHubProfileViewModel
+import com.alura.githubprofile.presentation.GitHubProfileViewModel
 import com.alura.githubprofile.repository.GitHubProfileRepository
 import com.alura.githubprofile.repository.GitHubProfileRepositoryImpl
 import com.alura.githubprofile.webservice.WebService

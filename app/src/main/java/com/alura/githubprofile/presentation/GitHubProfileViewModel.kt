@@ -1,10 +1,9 @@
-package com.alura.githubprofile
+package com.alura.githubprofile.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.alura.githubprofile.entities.UserProfileState
 import com.alura.githubprofile.repository.GitHubProfileRepository
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch

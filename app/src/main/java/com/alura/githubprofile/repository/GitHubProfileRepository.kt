@@ -1,7 +1,7 @@
 package com.alura.githubprofile.repository
 
-import com.alura.githubprofile.entities.GitHubUserData
+import com.alura.githubprofile.presentation.screen.entities.GitHubProfileUiState
 
 internal interface GitHubProfileRepository {
-    suspend fun fetchUserData(): GitHubUserData
+    suspend fun fetchUserData(): GitHubProfileUiState
 }
