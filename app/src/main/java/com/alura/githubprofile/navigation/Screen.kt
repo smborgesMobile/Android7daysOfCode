@@ -2,7 +2,7 @@ package com.alura.githubprofile.navigation
 
 internal sealed class Screen(val route: String) {
     object LoginScreen : Screen("login-screen")
-    object DetailScreen : Screen("detail-screen")
+    object ProfileScreen : Screen("profile-screen")
 
     fun withArgs(vararg args: String): String {
         return buildString {
