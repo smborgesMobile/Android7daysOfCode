@@ -269,7 +269,7 @@ internal fun ProfileHeader(userData: GitHubProfileUiState) {
             modifier = Modifier.fillMaxWidth()
         ) {
             Text(
-                text = userData.name,
+                text = userData.name.orEmpty(),
                 fontSize = 24.sp
             )
             Text(
