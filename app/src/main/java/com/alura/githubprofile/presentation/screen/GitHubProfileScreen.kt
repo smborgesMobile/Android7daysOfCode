@@ -34,16 +34,12 @@ import com.alura.githubprofile.R
 import com.alura.githubprofile.entities.UserProfileState
 import com.alura.githubprofile.presentation.screen.entities.GitHubProfileUiState
 import com.alura.githubprofile.presentation.screen.entities.GitHubRepositoryUIState
-import com.alura.githubprofile.ui.theme.GitHubProfileTheme
 
 @Composable
 internal fun ProfileScreen(state: UserProfileState?) {
-    // Bind user data
     when (state) {
         is UserProfileState.Success -> Profile(state.userData)
-        is UserProfileState.Error -> {
-            // is Error
-        }
+        is UserProfileState.Error -> ErrorScreen()
         is UserProfileState.Loading -> ProfileScreenLoading()
         else -> {
             // is null
@@ -73,6 +69,25 @@ internal fun Profile(userData: GitHubProfileUiState) {
         items(userData.repos) { repo ->
             RepositoryItem(repo = repo)
         }
+    }
+}
+
+@Composable
+internal fun ErrorScreen() {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(24.dp)
+    ) {
+        Text(
+            text = "Ocorreu um erro em nosso sistema! Tente novamente mais tarde.",
+            fontSize = 18.sp,
+            modifier = Modifier
+                .padding(10.dp)
+                .background(color = Color.Gray, shape = RoundedCornerShape(10.dp))
+                .padding(36.dp),
+            textAlign = TextAlign.Center
+        )
     }
 }
 
@@ -196,29 +211,12 @@ internal fun ProfileHeader(userData: GitHubProfileUiState) {
 
 @Composable
 @Preview(showBackground = true)
-internal fun ProfilePreview() {
-    // Create a mock content for preview.
-    val previewState = UserProfileState.Success(
-        userData = GitHubProfileUiState(
-            userName = "smborgesMobile",
-            avatarUrl = "https://avatars.githubusercontent.com/u/43793053?v=4",
-            name = "Sérgio Borges",
-            description = "Android Developer",
-            repos = listOf(
-                GitHubRepositoryUIState("Repo 02", "Description 02"),
-                GitHubRepositoryUIState("Repo 03"),
-                GitHubRepositoryUIState("Repo 04", "Description 04"),
-                GitHubRepositoryUIState("Repo 07")
-            )
-        )
-    )
-    GitHubProfileTheme {
-        ProfileScreen(previewState)
-    }
+internal fun RepositoryItemPreview() {
+    RepositoryItem(repo = GitHubRepositoryUIState("Repository Title", "Repository Description"))
 }
 
 @Composable
 @Preview(showBackground = true)
-internal fun RepositoryItemPreview() {
-    RepositoryItem(repo = GitHubRepositoryUIState("Repository Title", "Repository Description"))
+internal fun ErrorScreenPreview() {
+    ErrorScreen()
 }

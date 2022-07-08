@@ -8,9 +8,9 @@ import com.alura.githubprofile.presentation.screen.entities.GitHubRepositoryUISt
 
 internal class GitHubProfileRepositoryImpl(private val api: GitHubApi) : GitHubProfileRepository {
 
-    override suspend fun fetchUserData(): GitHubProfileUiState {
-        val userDataResponse = api.fetchUserData(USER_NAME)
-        val repositories = api.fetchUserRepository(USER_NAME)
+    override suspend fun fetchUserData(name: String): GitHubProfileUiState {
+        val userDataResponse = api.fetchUserData(name)
+        val repositories = api.fetchUserRepository(name)
 
         return if (userDataResponse.isSuccessful && repositories.isSuccessful) {
             val repos = convertRepoToUIState(repositories.body() ?: emptyList())
@@ -35,10 +35,5 @@ internal class GitHubProfileRepositoryImpl(private val api: GitHubApi) : GitHubP
                 description = it.description
             )
         }
-    }
-
-    companion object {
-        //TODO it will be removed from here.
-        private const val USER_NAME = "smborgesMobile"
     }
 }

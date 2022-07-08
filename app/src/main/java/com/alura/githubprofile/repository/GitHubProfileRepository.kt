@@ -4,5 +4,5 @@ import com.alura.githubprofile.presentation.screen.entities.GitHubProfileUiState
 
 internal interface GitHubProfileRepository {
 
-    suspend fun fetchUserData(): GitHubProfileUiState
+    suspend fun fetchUserData(name: String): GitHubProfileUiState
 }

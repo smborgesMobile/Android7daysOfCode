@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
-internal class GitHubProfileViewModel(private val repository: GitHubProfileRepository) : ViewModel() {
+internal class GitHubProfileViewModel(private val name: String, private val repository: GitHubProfileRepository) : ViewModel() {
 
     private val _userState: MutableStateFlow<UserProfileState?> = MutableStateFlow(null)
     val userState: StateFlow<UserProfileState?> = _userState
@@ -22,7 +22,7 @@ internal class GitHubProfileViewModel(private val repository: GitHubProfileRepos
         _userState.value = UserProfileState.Loading
         viewModelScope.launch {
             try {
-                val userData = repository.fetchUserData()
+                val userData = repository.fetchUserData(name)
                 _userState.value = UserProfileState.Success(userData = userData)
             } catch (exception: Exception) {
                 _userState.value = UserProfileState.Error

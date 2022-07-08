@@ -22,7 +22,7 @@ internal val repositoryModules = module {
 }
 
 internal val viewModelModules = module {
-    viewModel { GitHubProfileViewModel(get()) }
+    viewModel { parameters -> GitHubProfileViewModel(name = parameters.get(), get()) }
 }
 
 internal val gitHubModules: List<Module> = repositoryModules + viewModelModules + infrastructureModules
