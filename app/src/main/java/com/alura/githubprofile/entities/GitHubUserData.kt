@@ -12,5 +12,5 @@ internal data class GitHubUserData(
     @SerializedName("name")
     val name: String,
     @SerializedName("bio")
-    val description: String
+    val description: String? = null
 )

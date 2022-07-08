@@ -14,7 +14,8 @@ internal class GitHubProfileRepositoryImpl(private val api: GitHubApi) : GitHubP
 
         return if (userDataResponse.isSuccessful && repositories.isSuccessful) {
             val repos = convertRepoToUIState(repositories.body() ?: emptyList())
-            userDataResponse.body()?.toGitHubProfileUiState(repos) ?: throw Exception()
+            val userData = userDataResponse.body()
+            userData?.toGitHubProfileUiState(repos) ?: throw Exception()
         } else {
             throw Exception()
         }
@@ -24,7 +25,7 @@ internal class GitHubProfileRepositoryImpl(private val api: GitHubApi) : GitHubP
         userName = userName,
         avatarUrl = avatarUrl,
         name = name,
-        description = description,
+        description = description.orEmpty(),
         repos = repositories
     )
 

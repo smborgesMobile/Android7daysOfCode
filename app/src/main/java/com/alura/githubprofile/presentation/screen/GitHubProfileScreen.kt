@@ -281,7 +281,7 @@ internal fun ProfileHeader(userData: GitHubProfileUiState) {
 
         // Bottom description.
         Text(
-            text = userData.description,
+            text = userData.description.orEmpty(),
             fontSize = 12.sp,
             modifier = Modifier
                 .fillMaxWidth()
