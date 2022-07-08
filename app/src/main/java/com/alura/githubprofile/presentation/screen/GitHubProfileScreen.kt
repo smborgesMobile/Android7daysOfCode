@@ -9,8 +9,11 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Card
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -30,18 +33,74 @@ import coil.compose.AsyncImage
 import com.alura.githubprofile.R
 import com.alura.githubprofile.entities.UserProfileState
 import com.alura.githubprofile.presentation.screen.entities.GitHubProfileUiState
+import com.alura.githubprofile.presentation.screen.entities.GitHubRepositoryUIState
 import com.alura.githubprofile.ui.theme.GitHubProfileTheme
 
 @Composable
 internal fun ProfileScreen(state: UserProfileState?) {
+    // Bind user data
     when (state) {
-        is UserProfileState.Success -> ProfileContentScreen(state.userData)
+        is UserProfileState.Success -> Profile(state.userData)
         is UserProfileState.Error -> {
             // is Error
         }
         is UserProfileState.Loading -> ProfileScreenLoading()
         else -> {
             // is null
+        }
+    }
+}
+
+@Composable
+internal fun Profile(userData: GitHubProfileUiState) {
+    LazyColumn {
+        item {
+            ProfileHeader(userData = userData)
+        }
+
+        item {
+            if (userData.repos.isNotEmpty()) {
+                Text(
+                    text = "Repositorios",
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(8.dp),
+                    fontSize = 24.sp
+                )
+            }
+        }
+
+        items(userData.repos) { repo ->
+            RepositoryItem(repo = repo)
+        }
+    }
+}
+
+@Composable
+internal fun RepositoryItem(repo: GitHubRepositoryUIState) {
+    Card(
+        modifier = Modifier.padding(8.dp),
+        elevation = 4.dp
+    ) {
+        Column {
+            Text(
+                text = repo.name,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(Color(0xFF2d333b))
+                    .padding(8.dp),
+                fontSize = 20.sp,
+                color = Color.White
+            )
+
+            if (!repo.description.isNullOrBlank()) {
+                Text(
+                    text = repo.description,
+                    modifier = Modifier
+                        .padding(8.dp)
+                        .fillMaxWidth()
+                )
+            }
         }
     }
 }
@@ -58,7 +117,7 @@ internal fun ProfileScreenLoading() {
 }
 
 @Composable
-internal fun ProfileContentScreen(userData: GitHubProfileUiState) {
+internal fun ProfileHeader(userData: GitHubProfileUiState) {
     Column {
         // Will only evaluated during the composition
         val boxHeight = remember {
@@ -137,17 +196,29 @@ internal fun ProfileContentScreen(userData: GitHubProfileUiState) {
 
 @Composable
 @Preview(showBackground = true)
-internal fun DefaultPreview() {
+internal fun ProfilePreview() {
     // Create a mock content for preview.
     val previewState = UserProfileState.Success(
         userData = GitHubProfileUiState(
             userName = "smborgesMobile",
             avatarUrl = "https://avatars.githubusercontent.com/u/43793053?v=4",
             name = "Sérgio Borges",
-            description = "Android Developer"
+            description = "Android Developer",
+            repos = listOf(
+                GitHubRepositoryUIState("Repo 02", "Description 02"),
+                GitHubRepositoryUIState("Repo 03"),
+                GitHubRepositoryUIState("Repo 04", "Description 04"),
+                GitHubRepositoryUIState("Repo 07")
+            )
         )
     )
     GitHubProfileTheme {
         ProfileScreen(previewState)
     }
+}
+
+@Composable
+@Preview(showBackground = true)
+internal fun RepositoryItemPreview() {
+    RepositoryItem(repo = GitHubRepositoryUIState("Repository Title", "Repository Description"))
 }

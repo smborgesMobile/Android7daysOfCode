@@ -27,7 +27,7 @@ class GitHubProfileActivity : ComponentActivity() {
                     color = MaterialTheme.colors.background
                 ) {
                     // Handle recomposition and save the state. When a recomposition occurs the value will be subscribed.
-                    val profileState: State<UserProfileState?> = viewModel.viewState.collectAsState()
+                    val profileState: State<UserProfileState?> = viewModel.userState.collectAsState()
                     ProfileScreen(profileState.value)
                 }
             }
